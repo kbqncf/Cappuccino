@@ -3,15 +3,15 @@
  */
 function $(id) {
     if (id) {
-        return new CodeTyphon(id);
+        return new Cappuccino(id);
     }
 }
-function CodeTyphon(id) {
+function Cappuccino(id) {
     this.id = id;
     this.obj = document.getElementById(id);
     return this;
 }
-CodeTyphon.prototype.val = function (v) {
+Cappuccino.prototype.val = function (v) {
     if (v == undefined) {
         return this.obj.value;
     }
@@ -20,7 +20,7 @@ CodeTyphon.prototype.val = function (v) {
         return this;
     }
 }
-CodeTyphon.prototype.text = function (text) {
+Cappuccino.prototype.text = function (text) {
     if (text == undefined) {
         return this.obj.innerHTML;
     } else {
@@ -28,7 +28,7 @@ CodeTyphon.prototype.text = function (text) {
         return this;
     }
 }
-CodeTyphon.prototype.append = function (text) {
+Cappuccino.prototype.append = function (text) {
     if (text == undefined) {
         return this.obj.innerHTML;
     } else {
@@ -36,7 +36,7 @@ CodeTyphon.prototype.append = function (text) {
         return this;
     }
 }
-CodeTyphon.prototype.href = function (link) {
+Cappuccino.prototype.href = function (link) {
     if (link == undefined) {
         return this.obj.href;
     } else {
@@ -44,7 +44,7 @@ CodeTyphon.prototype.href = function (link) {
         return this;
     }
 }
-CodeTyphon.prototype.src = function (link) {
+Cappuccino.prototype.src = function (link) {
     if (link == undefined) {
         return this.obj.src;
     } else {
@@ -52,32 +52,31 @@ CodeTyphon.prototype.src = function (link) {
         return this;
     }
 }
-CodeTyphon.prototype.style = function (styleName, styleValue) {
+Cappuccino.prototype.style = function (styleName, styleValue) {
     if (!styleValue) {
-
         return this.obj.style.styleName;
     } else {
         eval("this.obj.style." + styleName + "='" + styleValue + "'");
         return this;
     }
 }
-CodeTyphon.prototype.show = function () {
+Cappuccino.prototype.show = function () {
     this.obj.style.display = 'block';
     return this;
 }
-CodeTyphon.prototype.hide = function () {
+Cappuccino.prototype.hide = function () {
     this.obj.style.display = 'none';
     return this;
 }
-CodeTyphon.prototype.click = function (fun) {
+Cappuccino.prototype.click = function (fun) {
     this.bind('click', fun);
     return this;
 }
-CodeTyphon.prototype.keydown = function (fun) {
+Cappuccino.prototype.keydown = function (fun) {
     this.bind('keydown', fun);
     return this;
 }
-CodeTyphon.prototype.bind = function (evname, fun) {
+Cappuccino.prototype.bind = function (evname, fun) {
     if (!fun) {
     } else {
         if (evname == "dragstart") {//16:10
@@ -87,7 +86,7 @@ CodeTyphon.prototype.bind = function (evname, fun) {
         return this;
     }
 }
-CodeTyphon.prototype.focus = function () {
+Cappuccino.prototype.focus = function () {
     this.obj.focus();
     return this;
 }
@@ -166,10 +165,6 @@ $.jsonp = function (url, callbackname) {
     s.src = url + callbackname;
     document.getElementsByTagName("body").item(0).appendChild(s);
 }
-/*
- $.jsonp("http://haskellchina.jd-app.com/tops/3/","listop");
- */
-
 $.setResizeBackGround = function (src) {
     var img = document.createElement('img');
     img.id = "resizebackgroundimg";
@@ -184,7 +179,6 @@ $.setResizeBackGround = function (src) {
         document.getElementById("resizebackgroundimg").height = parseInt(bh);
     }
 }
-
 $.randomStr = function (len) {
     var rdmString = "";
     for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
