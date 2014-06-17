@@ -133,33 +133,6 @@ $.delObj = function (key) {
 $.clearObj = function () {
     localStorage.clear();
 }
-$.checkTel = function (str) {
-    var regPartton = /1[3-8]+\d{9}/;
-    if (!str || str == null) {
-        return "手机号码不能为空！";
-    } else if (!regPartton.test(str)) {
-        return "手机号码格式不正确！";
-    } else {
-        return true;
-    }
-}
-$.isEmail = function (str) {
-    var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
-    return reg.test(str);
-}
-$.isMob = function (fun) {
-    if (navigator.userAgent.indexOf('Mobile') != -1) {
-        fun();
-    }
-}
-$.isMobElse = function (mofun, pcfun) {
-    if (navigator.userAgent.indexOf('Mobile') != -1) {
-        mofun();
-    } else {
-        pcfun();
-    }
-}
-
 $.jsonp = function (url, callbackname) {
     var s = document.createElement("script");
     s.src = url + callbackname;
@@ -184,11 +157,83 @@ $.randomStr = function (len) {
     for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
     return rdmString.substr(0, len);
 }
-$.float2int = function (float) {
-//    return (float) | 0;
-    return ~~ (float);
+$.floatToint = function (float) {
+    return ~~(float);
 }
-$.ab2ba = function (a, b) {
-    a = [b, b = a][0];
-    return [a, b];
+$.getUrlPrmt = function (url) {
+    url = url ? url : window.location.href;
+    var _pa = url.substring(url.indexOf('?')), _arrS = _pa.split('&'), _rs = {};
+    for (var i = 0, _len = _arrS.length; i < _len; i++) {
+        var pos = _arrS[i].indexOf('=');
+        if (pos == -1) {
+            continue;
+        }
+        var name = _arrS[i].substring(0, pos), value = decodeURIComponent(_arrS[i].substring(pos + 1));
+        _rs[name] = value;
+    }
+    return _rs;
+}
+/**
+ * var htmlTemp = '<p><span>{d1}</span><span>{d2}</span><span>{d3.id.u}</span></p>';
+ **/
+$.tempExt = function (h, data) {
+    return h.replace(/\{(.*?)\}/g, function (str, m) {
+        var arrM = m.split('.'),
+            t = data[arrM.shift()];
+        for (var i = 0, _len = arrM.length; i < _len; i++) {
+            t = t[arrM[i]];
+        }
+        return t === undefined || t === null ? '' : t;
+    });
+}
+$.cookie = function (name, value, options) {
+    var d = document;
+    if (typeof value != 'undefined') {
+        options = options || ( {});
+        if (value === null) {
+            value = '';
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && ( typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString();
+        }
+        var path = options.path ? '; path=' + options.path : '; path=/';
+        var domain = options.domain ? '; domain=' + options.domain : '';
+        var secure = options.secure ? '; secure' : '';
+        d.cookie = [name, '=', window.encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else {
+        var cookieValue = null;
+        if (d.cookie && d.cookie != '') {
+            var cookies = d.cookie.split(';');
+            for (var i = 0, _len = cookies.length; i < _len; i++) {
+                var cookie = $.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = window.decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+}
+/**
+ * 1389596170000=>2014-01-06 09:55:53
+ **/
+$.dateformat = function (value, type) {
+    if (!type) {
+        type = value;
+        value = new Date();
+    }
+    if ($.type(value) !== "date") {
+        value = new Date();
+    }
+    return type.replace(/yyyy/g, value.getFullYear()).replace(/mm/g, (value.getMonth() + 1) < 10 ? "0" + (value.getMonth() + 1) : value.getMonth() + 1).replace(/dd/g, value.getDate() < 10 ? "0" + value.getDate() : value.getDate()).replace(/HH/g, value.getHours() < 10 ? "0" + value.getHours() : value.getHours()).replace(/MM/g, value.getMinutes() < 10 ? "0" + value.getMinutes() : value.getMinutes()).replace(/SS/g, value.getSeconds() < 10 ? "0" + value.getSeconds() : value.getSeconds());
 }
