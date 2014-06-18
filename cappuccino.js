@@ -1,5 +1,5 @@
 /**
- * Created by gang.li on 14-6-17.
+ * Created by gang.li on 14-5-03.
  */
 function $(id) {
     if (id) {
@@ -90,13 +90,27 @@ Cappuccino.prototype.focus = function () {
     this.obj.focus();
     return this;
 }
-$.cort_array = function (array) {
-    array = array.sort(function () {
+$.randomArray = function (arr) {
+    arr = arr.sort(function () {
         return 0.5 > Math.random();
     });
-    return array;
+    return arr;
 }
-$.html_encode = function (str) {
+$.getRandomArray = function (len) {
+    var _arrR = [];
+    for (var i = 0; i < len; i++) {
+        _arrR.push(i);
+    }
+    i = 0;
+    for (; i < len; i++) {
+        var _r = Math.floor(Math.random() * (len - i));
+        var _temp = _arrR[_r];
+        _arrR[_r] = _arrR[len - 1 - i];
+        _arrR[len - 1 - i] = _temp;
+    }
+    return _arrR;
+}
+$.htmlEncode = function (str) {
     var s = "";
     if (str.length == 0) return "";
     s = str.replace(/&/g, "&gt;");
@@ -108,7 +122,7 @@ $.html_encode = function (str) {
     s = s.replace(/\n/g, "<br>");
     return s;
 }
-$.html_decode = function (str) {
+$.htmlDecode = function (str) {
     var s = "";
     if (str.length == 0) return "";
     s = str.replace(/&gt;/g, "&");
@@ -120,7 +134,6 @@ $.html_decode = function (str) {
     s = s.replace(/<br>/g, "\n");
     return s;
 }
-
 $.saveObj = function (key, obj) {
     localStorage.setItem(key, JSON.stringify(obj));
 }
@@ -168,7 +181,7 @@ $.getUrlPrmt = function (url) {
         if (pos == -1) {
             continue;
         }
-        var name = _arrS[i].substring(0, pos), value = decodeURIComponent(_arrS[i].substring(pos + 1));
+        var name = _arrS[i].substring(0, pos), value = window.decodeURIComponent(_arrS[i].substring(pos + 1));
         _rs[name] = value;
     }
     return _rs;
